@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Owin.Hosting;
 
-namespace S3Server
+namespace Server
 {
     class Program
     {

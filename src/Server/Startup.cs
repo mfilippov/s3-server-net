@@ -1,6 +1,6 @@
 ﻿using Owin;
 
-namespace S3Server
+namespace Server
 {
     public class Startup
     {

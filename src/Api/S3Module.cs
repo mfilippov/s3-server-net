@@ -1,7 +1,7 @@
 ﻿using System;
 using Nancy;
 
-namespace S3Server
+namespace Api
 {
     public class S3Module : NancyModule
     {
