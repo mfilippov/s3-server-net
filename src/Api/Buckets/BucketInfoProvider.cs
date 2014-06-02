@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
+using Api.Domain;
 using Api.Filesystem;
 
 namespace Api.Buckets

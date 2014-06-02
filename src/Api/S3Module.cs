@@ -1,12 +1,17 @@
 ﻿using System;
+using Api.Buckets;
 using Nancy;
 
 namespace Api
 {
     public class S3Module : NancyModule
     {
-        public S3Module()
+        private IBucketInfoProvider _bucketInfoProvider;
+
+        public S3Module(IBucketInfoProvider bucketInfoProvider)
         {
+            _bucketInfoProvider = bucketInfoProvider;
+
             Get["/"] = _ =>
             {
                 Console.WriteLine(Request.Headers.Authorization);

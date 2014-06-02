@@ -42,9 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Buckets\BucketInfo.cs" />
     <Compile Include="Buckets\BucketInfoProvider.cs" />
     <Compile Include="Buckets\IBucketInfoProvider.cs" />
+    <Compile Include="Domain\BucketInfo.cs" />
     <Compile Include="Filesystem\FilesystemProvider.cs" />
     <Compile Include="Filesystem\IFilesystemProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

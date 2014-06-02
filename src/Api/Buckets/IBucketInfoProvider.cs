@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
+using Api.Domain;
 
 namespace Api.Buckets
 {
-    interface IBucketInfoProvider
+    public interface IBucketInfoProvider
     {
         IList<BucketInfo> GetBucketList();
     }

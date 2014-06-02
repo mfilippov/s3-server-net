@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
 using Api.Buckets;
+using Api.Domain;
 using Api.Filesystem;
 using Moq;
 using Xunit;

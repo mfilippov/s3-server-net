@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Api.Buckets
+namespace Api.Domain
 {
     public class BucketInfo
     {
