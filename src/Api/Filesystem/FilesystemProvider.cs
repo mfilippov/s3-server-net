@@ -20,5 +20,10 @@ namespace Api.Filesystem
             if (includeFiles) return Directory.GetFiles(_rootPath).ToList();
             return new List<string>();
         }
+
+        public FileStream GetFileStream(string path)
+        {
+            return File.Open(Path.Combine(_rootPath, path), FileMode.Open);
+        }
     }
 }
