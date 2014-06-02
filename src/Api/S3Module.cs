@@ -1,21 +1,40 @@
-﻿using System;
+﻿using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 using Api.Buckets;
+using Api.Domain;
 using Nancy;
 
 namespace Api
 {
     public class S3Module : NancyModule
     {
-        private IBucketInfoProvider _bucketInfoProvider;
-
         public S3Module(IBucketInfoProvider bucketInfoProvider)
         {
-            _bucketInfoProvider = bucketInfoProvider;
-
             Get["/"] = _ =>
             {
-                Console.WriteLine(Request.Headers.Authorization);
-                return "Welcome to S3 Server";
+                var owner = new Owner {ID = "bcaf1ffd86f461ca5fb16fd081034f", DisplayName = "webfile"};
+                var buckets = bucketInfoProvider.GetBucketList();
+
+                var document = new XDocument(
+                    new XElement("ListAllMyBucketsResult",
+                        new XElement("Owner",
+                            new XElement("ID", owner.ID),
+                            new XElement("DisplayName", owner.DisplayName)
+                            ),
+                        new XElement("Buckets", buckets.Select(b =>
+                            new XElement("Bucket",
+                                new XElement("Name", b.Name),
+                                new XElement("CreationDate", b.CreationDate.ToLongTimeString())
+                                )
+                            )
+                            )
+                        )
+                    );
+                var resultStream = new MemoryStream();
+                document.Save(resultStream);
+                resultStream.Seek(0, SeekOrigin.Begin);
+                return Response.FromStream(resultStream, "text/xml");
             };
         }
     }

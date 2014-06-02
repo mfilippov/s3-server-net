@@ -45,6 +45,7 @@
     <Compile Include="Buckets\BucketInfoProvider.cs" />
     <Compile Include="Buckets\IBucketInfoProvider.cs" />
     <Compile Include="Domain\BucketInfo.cs" />
+    <Compile Include="Domain\Owner.cs" />
     <Compile Include="Filesystem\FilesystemProvider.cs" />
     <Compile Include="Filesystem\IFilesystemProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -53,7 +54,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Authorization\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

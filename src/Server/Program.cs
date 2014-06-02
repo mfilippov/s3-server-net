@@ -7,7 +7,7 @@ namespace Server
     {
         static void Main()
         {
-            using (WebApp.Start<Startup>("http://*:12345"))
+            using (WebApp.Start<Startup>("http://localhost:12345"))
             {
                 Console.WriteLine("Started. Press any key for exit...");
                 Console.ReadKey(true);
