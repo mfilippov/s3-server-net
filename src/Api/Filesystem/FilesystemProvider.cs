@@ -30,7 +30,7 @@ namespace Api.Filesystem
             return new List<string>();
         }
 
-        public FileStream GetFileStream(string path)
+        public Stream StreamOfFile(string path)
         {
             return File.Open(Path.Combine(_rootPath, path), FileMode.Open);
         }

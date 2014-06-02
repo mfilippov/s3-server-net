@@ -21,7 +21,7 @@ namespace Api.Buckets
 
             return _fsProvider.ListRootDirectory()
                 .Where(s => _fsProvider.Exists(Path.Combine(s, "metadata.xml")))
-                .Select(s => bucketInfoSerializer.Deserialize(_fsProvider.GetFileStream(Path.Combine(s, "metadata.xml"))) as BucketInfo).ToList();
+                .Select(s => bucketInfoSerializer.Deserialize(_fsProvider.StreamOfFile(Path.Combine(s, "metadata.xml"))) as BucketInfo).ToList();
         }
     }
 }
