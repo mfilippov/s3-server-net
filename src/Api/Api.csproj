@@ -42,11 +42,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Buckets\BucketInfoProvider.cs" />
+    <Compile Include="Buckets\IBucketInfoProvider.cs" />
+    <Compile Include="Domain\BucketInfo.cs" />
+    <Compile Include="Domain\Owner.cs" />
+    <Compile Include="Filesystem\FilesystemProvider.cs" />
+    <Compile Include="Filesystem\IFilesystemProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="S3Module.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Authorization\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
