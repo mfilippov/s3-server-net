@@ -2,7 +2,7 @@
 {
     public interface INodeConfiguration
     {
-        string NodeUri { get; }
+        string NodeEndpoint { get; }
         string RootPath { get; }
     }
 }
