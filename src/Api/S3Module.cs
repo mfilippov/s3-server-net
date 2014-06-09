@@ -6,6 +6,7 @@ using Api.Buckets;
 using Api.Configuration;
 using Api.Domain;
 using Nancy;
+using Nancy.Security;
 
 namespace Api
 {
@@ -13,9 +14,11 @@ namespace Api
     {
         public S3Module(INodeConfiguration appConfiguration, IBucketInfoProvider bucketInfoProvider)
         {
+            this.RequiresAuthentication();
+
             Get["/"] = _ =>
             {
-                var owner = new Owner {ID = "bcaf1ffd86f461ca5fb16fd081034f", DisplayName = "webfile"};
+                var owner = new BucketLord {ID = "bcaf1ffd86f461ca5fb16fd081034f", DisplayName = "webfile"};
                 var buckets = bucketInfoProvider.GetBucketList();
 
                 var date = Request.Headers.Date;
