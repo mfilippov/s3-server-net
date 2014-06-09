@@ -43,7 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Security\BucketLordTemple.cs" />
     <Compile Include="Security\FaceControlService.cs" />
+    <Compile Include="Security\IBucketLordTemple.cs" />
     <Compile Include="Security\IFaceControlService.cs" />
     <Compile Include="Security\S3Auth.cs" />
     <Compile Include="Buckets\BucketInfoProvider.cs" />
