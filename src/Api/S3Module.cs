@@ -25,7 +25,7 @@ namespace Api
                         new XElement("Buckets", buckets.Select(b =>
                             new XElement("Bucket",
                                 new XElement("Name", b.Name),
-                                new XElement("CreationDate", b.CreationDate.ToLongTimeString())
+                                new XElement("CreationDate", b.CreationDate.ToS3String())
                                 )
                             )
                             )

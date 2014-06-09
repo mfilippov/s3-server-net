@@ -1,4 +1,4 @@
-﻿using Api.Filesystem;
+﻿using Api.Configuration;
 using Nancy;
 using Nancy.TinyIoc;
 
@@ -9,7 +9,7 @@ namespace Server
         protected override void ConfigureApplicationContainer(TinyIoCContainer container)
         {
             base.ConfigureApplicationContainer(container);
-            container.Register(typeof (IFilesystemProvider), new FilesystemProvider("."));
+            container.Register(typeof (INodeConfiguration), new NodeConfiguration());
         }
     }
 }

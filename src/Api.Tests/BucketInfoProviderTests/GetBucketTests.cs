@@ -16,34 +16,51 @@ namespace Api.Tests.BucketInfoProviderTests
         [Fact]
         public void GetBucketListActsWell()
         {
-            const string bucketName = "vxaitp8ocn";
-            var bucketCreationDate = new DateTime(2014, 5, 5, 12, 0, 35);
-            var metadataFilePath = Path.Combine(bucketName, "metadata.xml");
-
-            var serializator = new XmlSerializer(typeof (BucketInfo));
-            var bucketMetadata = new BucketInfo()
+            var buckets = new List<BucketInfo>
             {
-                Name = bucketName,
-                CreationDate = bucketCreationDate
+                new BucketInfo
+                {
+                    Name = "quotes",
+                    CreationDate = new DateTime(2006, 02, 03, 16, 45, 09, 0)
+                },
+                new BucketInfo
+                {
+                    Name = "samples",
+                    CreationDate = new DateTime(2006, 02, 03, 16, 42, 58, 0)
+                }
             };
 
-            var xmlStream = new MemoryStream();
-            serializator.Serialize(xmlStream, bucketMetadata);
-            xmlStream.Seek(0, SeekOrigin.Begin);            
+            Func<string, string> makePath = s => Path.Combine(s, "metadata.xml");
+
+            var serializator = new XmlSerializer(typeof (BucketInfo));
+
+            Func<BucketInfo, Stream> makeStream = bi =>
+            {
+                var xmlStream = new MemoryStream();
+                serializator.Serialize(xmlStream, bi);
+                xmlStream.Seek(0, SeekOrigin.Begin);
+                return xmlStream;
+            }; 
 
             var fileSystemProvider = Mock.Of<IFilesystemProvider>(pr =>
-                pr.ListRootDirectory(false, true) == new List<string>{bucketName} &&
-                pr.Exists(metadataFilePath, true, true) == true &&
-                pr.StreamOfFile(metadataFilePath) == xmlStream);
+                pr.ListRootDirectory(false, true) == buckets.Select(b => b.Name).ToList());
+            Mock.Get(fileSystemProvider)
+                .Setup(m => m.Exists(It.IsAny<string>(), true, true))
+                .Returns((string s, bool b1, bool b2) => buckets.Select(b => makePath(b.Name)).Contains(s));
+            Mock.Get(fileSystemProvider)
+                .Setup(m => m.StreamOfFile(It.IsAny<string>()))
+                .Returns((string s) => makeStream(buckets.First(b => makePath(b.Name) == s)));
 
             var bucketInfoProvider = new BucketInfoProvider(fileSystemProvider);
 
             var result = bucketInfoProvider.GetBucketList();
 
             Assert.True(result.Any());
-            Assert.Equal(1, result.Count);
-            Assert.Equal(bucketName, result.First().Name);
-            Assert.Equal(bucketCreationDate, result.First().CreationDate);
+            Assert.Equal(2, result.Count);
+            Assert.Equal(buckets[0].Name, result[0].Name);
+            Assert.Equal(buckets[0].CreationDate, result[0].CreationDate);
+            Assert.Equal(buckets[1].Name, result[1].Name);
+            Assert.Equal(buckets[1].CreationDate, result[1].CreationDate);
         }
     }
 }

@@ -55,6 +55,7 @@
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
@@ -69,6 +70,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Api.Configuration\Api.Configuration.csproj">
+      <Project>{7A3C5ACA-5127-426E-BA38-3C2C47270F7C}</Project>
+      <Name>Api.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Api\Api.csproj">
       <Project>{a89053da-4b4b-455a-9da7-4e9b38d34306}</Project>
       <Name>Api</Name>
