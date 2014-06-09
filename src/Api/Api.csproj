@@ -43,9 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Authorization\FaceControlService.cs" />
-    <Compile Include="Authorization\IFaceControlService.cs" />
-    <Compile Include="Authorization\S3Auth.cs" />
+    <Compile Include="Security\FaceControlService.cs" />
+    <Compile Include="Security\IFaceControlService.cs" />
+    <Compile Include="Security\S3Auth.cs" />
     <Compile Include="Buckets\BucketInfoProvider.cs" />
     <Compile Include="Buckets\IBucketInfoProvider.cs" />
     <Compile Include="Domain\BucketInfo.cs" />

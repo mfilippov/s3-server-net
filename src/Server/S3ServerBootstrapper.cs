@@ -1,5 +1,5 @@
-﻿using Api.Authorization;
-using Api.Configuration;
+﻿using Api.Configuration;
+using Api.Security;
 using Nancy;
 using Nancy.Authentication.Stateless;
 using Nancy.Bootstrapper;

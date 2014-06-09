@@ -2,7 +2,7 @@
 using Nancy;
 using Nancy.Security;
 
-namespace Api.Authorization
+namespace Api.Security
 {
     public class S3Auth
     {

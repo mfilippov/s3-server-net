@@ -1,7 +1,7 @@
 ﻿using Api.Domain;
 using Nancy;
 
-namespace Api.Authorization
+namespace Api.Security
 {
     public class FaceControlService : IFaceControlService
     {
