@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Tests", "src\Api.Tests\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "src\Api\Api.csproj", "{A89053DA-4B4B-455A-9DA7-4E9B38D34306}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Configuration", "Api.Configuration\Api.Configuration.csproj", "{7A3C5ACA-5127-426E-BA38-3C2C47270F7C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api.Configuration", "src\Api.Configuration\Api.Configuration.csproj", "{7A3C5ACA-5127-426E-BA38-3C2C47270F7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

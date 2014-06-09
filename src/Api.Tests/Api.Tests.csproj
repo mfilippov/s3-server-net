@@ -60,7 +60,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Api.Configuration\Api.Configuration.csproj">
+    <ProjectReference Include="..\Api.Configuration\Api.Configuration.csproj">
       <Project>{7A3C5ACA-5127-426E-BA38-3C2C47270F7C}</Project>
       <Name>Api.Configuration</Name>
     </ProjectReference>
