@@ -72,15 +72,16 @@ namespace Api
 
         public static string ComputeSignature(DateTime date, string secretAccessKey, string region, string stringToSign)
         {
-            Func<string, HMACSHA256> makeHasher = salt => new HMACSHA256(Encoding.ASCII.GetBytes(salt));
-            Func<string, string, string> hash = (key, str) => makeHasher(key).HashString(str);
+            Func<string, byte[]> strToBytes = s => Encoding.UTF8.GetBytes(s);
+            Func<byte[], byte[], byte[]> hash = (key, str) => new HMACSHA256(key).ComputeHash(str);
+            Func<byte[], string> bytesToString = bts => string.Join(string.Empty, bts.Select(b => b.ToString("x2")));
 
-            var dateKey = hash(string.Format("AWS4{0}", secretAccessKey), date.ToString("yyyyMMdd"));
-            var dateRegionKey = hash(dateKey, region);
-            var dateRegionServiceKey = hash(dateRegionKey, "s3");
-            var signingKey = hash(dateRegionServiceKey, "aws4_request");
+            var dateKey = hash(strToBytes(string.Format("AWS4{0}", secretAccessKey)), strToBytes(date.ToString("yyyyMMdd")));
+            var dateRegionKey = hash(dateKey, strToBytes(region));
+            var dateRegionServiceKey = hash(dateRegionKey, strToBytes("s3"));
+            var signingKey = hash(dateRegionServiceKey, strToBytes("aws4_request"));
 
-            return hash(signingKey, stringToSign);
+            return bytesToString(hash(signingKey, strToBytes(stringToSign)));
         }
     }
 }
