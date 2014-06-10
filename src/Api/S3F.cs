@@ -20,6 +20,11 @@ namespace Api
             return string.Format("{0}T{1}Z", datetime.ToString(DateFormat), datetime.ToString(TimeFormat));
         }
 
+        public static string ToISO8601(this DateTime datetime)
+        {
+            return string.Format("{0}T{1}Z", datetime.ToString("yyyyMMdd"), datetime.ToString("hhmmss"));
+        }
+
         public static string UriEncode(string input, bool encodeSlash)
         {
             var result = new StringBuilder();
@@ -55,6 +60,14 @@ namespace Api
             var payloadHash = SHA256.Create().HashString(payload);
             return string.Join("\n", httpMethod, absolutePath, queryString, headerString, signedHeadersString,
                 payloadHash);
+        }
+
+        public static string CreateStringToSign(DateTime date, string region, string canonicalRequest)
+        {
+            return string.Format("AWS4-HMAC-SHA256\n{0}\n{1}\n{2}", 
+                DateTime.Now.ToISO8601(),
+                string.Format("{0}/{1}/s3/aws4_request", date.ToString("yyyyMMdd"), region),
+                SHA256.Create().HashString(canonicalRequest));
         }
     }
 }
