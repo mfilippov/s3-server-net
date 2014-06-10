@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Security.Policy;
 using System.Text;
 using LeviySoft.Extensions;
 
@@ -68,6 +69,19 @@ namespace Api
                 DateTime.Now.ToISO8601(),
                 string.Format("{0}/{1}/s3/aws4_request", date.ToString("yyyyMMdd"), region),
                 SHA256.Create().HashString(canonicalRequest));
+        }
+
+        public static string ComputeSignature(DateTime date, string secretAccessKey, string region, string stringToSign)
+        {
+            Func<string, HMACSHA256> makeHasher = salt => new HMACSHA256(Encoding.ASCII.GetBytes(salt));
+            Func<string, string, string> hash = (key, str) => makeHasher(key).HashString(str);
+
+            var dateKey = hash(string.Format("AWS4{0}", secretAccessKey), date.ToString("yyyyMMdd"));
+            var dateRegionKey = hash(dateKey, region);
+            var dateRegionServiceKey = hash(dateRegionKey, "s3");
+            var signingKey = hash(dateRegionServiceKey, "aws4_request");
+
+            return hash(signingKey, stringToSign);
         }
     }
 }
