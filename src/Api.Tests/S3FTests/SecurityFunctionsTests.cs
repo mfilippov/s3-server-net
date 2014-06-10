@@ -7,10 +7,10 @@ namespace Api.Tests.S3FTests
 {
     public class SecurityFunctionsTests
     {
-        private static string AWSAccessKeyId = "AKIAIOSFODNN7EXAMPLE";
-        private static string AWSSecretAccessKey = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY";
-        private static DateTime RequestTimestamp = new DateTime(2013, 5, 24);
-        private static string Region = "us-east-1";
+        private const string AwsAccessKeyId = "AKIAIOSFODNN7EXAMPLE";
+        private const string AwsSecretAccessKey = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY";
+        private static readonly DateTime RequestTimestamp = new DateTime(2013, 5, 24);
+        private const string Region = "us-east-1";
 
         private readonly SortedDictionary<string, string> _headers = new SortedDictionary<string, string>
         {
@@ -42,10 +42,22 @@ namespace Api.Tests.S3FTests
         {
             const string signature = "f0e8bdb87c964420e857bd35b5d6ed310bd44f0170aba48dd91039c6036bdb41";
             Assert.Equal(signature,
-                S3F.ComputeSignature(RequestTimestamp, AWSSecretAccessKey, Region,
+                S3F.ComputeSignature(RequestTimestamp, AwsSecretAccessKey, Region,
                     S3F.CreateStringToSign(RequestTimestamp, Region,
                         S3F.CreateCanonicalRequest("GET", "/test.txt", string.Empty, _headers, SignedHeaders,
                             string.Empty))));
+        }
+
+        [Fact]
+        public void CreateAuthorizationHeaderTest()
+        {
+            const string etalon = "AWS4-HMAC-SHA256 Credential=AKIAIOSFODNN7EXAMPLE/20130524/us-east-1/s3/aws4_request,SignedHeaders=host;range;x-amz-content-sha256;x-amz-date,Signature=f0e8bdb87c964420e857bd35b5d6ed310bd44f0170aba48dd91039c6036bdb41";
+            Assert.Equal(etalon,
+                S3F.AssembleAuthorizationHeader(AwsAccessKeyId, RequestTimestamp, Region, SignedHeaders,
+                    S3F.ComputeSignature(RequestTimestamp, AwsSecretAccessKey, Region,
+                        S3F.CreateStringToSign(RequestTimestamp, Region,
+                            S3F.CreateCanonicalRequest("GET", "/test.txt", string.Empty, _headers, SignedHeaders,
+                                string.Empty)))));
         }
     }
 }

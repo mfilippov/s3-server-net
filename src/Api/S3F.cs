@@ -83,5 +83,15 @@ namespace Api
 
             return bytesToString(hash(signingKey, strToBytes(stringToSign)));
         }
+
+        public static string AssembleAuthorizationHeader(string accessKeyId, DateTime date, string region,
+            List<string> signedHeaders, string signature)
+        {
+            signedHeaders.Sort();
+            return string.Format("AWS4-HMAC-SHA256 Credential={0},SignedHeaders={1},Signature={2}",
+                string.Format("{0}/{1}/{2}/s3/aws4_request", accessKeyId, date.ToString("yyyyMMdd"), region),
+                string.Join(";", signedHeaders.Select(s => s.ToLowerInvariant())),
+                signature);
+        }
     }
 }
