@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Security.Policy;
 using System.Text;
 using LeviySoft.Extensions;
 
@@ -57,7 +56,7 @@ namespace Api
             var headerString = string.Join("\n",
                 headers.Select(h => string.Format("{0}:{1}", h.Key.ToLowerInvariant(), h.Value.Trim())));
             signedHeaders.Sort();
-            var signedHeadersString = string.Join(";", signedHeaders);
+            var signedHeadersString = string.Join(";", signedHeaders.Select(s => s.ToLowerInvariant()));
             var payloadHash = SHA256.Create().HashString(payload);
             return string.Join("\n", httpMethod, absolutePath, queryString, headerString, signedHeadersString,
                 payloadHash);
