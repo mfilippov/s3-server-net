@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Globalization;
+using System.Linq;
 using Api.Domain;
 using LeviySoft.Extensions;
 using Nancy;
@@ -36,6 +38,9 @@ namespace Api.Security
                 if (bucketLord == null) return null;
 
                 //TODO: complete
+                var sigDate = DateTime.ParseExact(credentials[1], "yyyyMMdd", CultureInfo.InvariantCulture);
+                var signedHeaders = authParams["SignedHeaders"].Split(';');
+
             }
 
             return null;
