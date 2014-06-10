@@ -13,7 +13,7 @@ namespace Api
     public static class S3F
     {
         public static string DateFormat = "yyyy-MM-dd";
-        public static string TimeFormat = "hh:mm:ss.fff";
+        public static string TimeFormat = "HH:mm:ss.fff";
 
         public static string ToS3String(this DateTime datetime)
         {
@@ -22,7 +22,7 @@ namespace Api
 
         public static string ToISO8601(this DateTime datetime)
         {
-            return string.Format("{0}T{1}Z", datetime.ToString("yyyyMMdd"), datetime.ToString("hhmmss"));
+            return string.Format("{0}T{1}Z", datetime.ToString("yyyyMMdd"), datetime.ToString("HHmmss"));
         }
 
         public static string UriEncode(string input, bool encodeSlash)
@@ -58,14 +58,14 @@ namespace Api
             signedHeaders.Sort();
             var signedHeadersString = string.Join(";", signedHeaders.Select(s => s.ToLowerInvariant()));
             var payloadHash = SHA256.Create().HashString(payload);
-            return string.Join("\n", httpMethod, absolutePath, queryString, headerString, signedHeadersString,
+            return string.Join("\n", httpMethod, absolutePath, queryString, headerString, string.Empty, signedHeadersString,
                 payloadHash);
         }
 
         public static string CreateStringToSign(DateTime date, string region, string canonicalRequest)
         {
             return string.Format("AWS4-HMAC-SHA256\n{0}\n{1}\n{2}", 
-                DateTime.Now.ToISO8601(),
+                date.ToISO8601(),
                 string.Format("{0}/{1}/s3/aws4_request", date.ToString("yyyyMMdd"), region),
                 SHA256.Create().HashString(canonicalRequest));
         }
