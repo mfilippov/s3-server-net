@@ -36,7 +36,7 @@ namespace Api
                 }
                 else
                 {
-                    result.Append(string.Format("%{0}", Encoding.UTF8.GetBytes(new []{ch}).Select(b => b.ToString("X2"))));
+                    result.Append(string.Format("%{0}", string.Join("", Encoding.UTF8.GetBytes(new []{ch}).Select(b => b.ToString("X2")))));
                 }
             }
             return result.ToString();
