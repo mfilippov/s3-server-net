@@ -13,7 +13,13 @@ namespace Server
         {
             base.ApplicationStartup(container, pipelines);
 
-            var securityCfg = new StatelessAuthenticationConfiguration(S3Auth.Authenticate);
+            var securityCfg = new StatelessAuthenticationConfiguration(ctx =>
+            {
+                var userValidator =
+                    container.Resolve<IFaceControlService>();
+
+                return userValidator.CheckAuth(ctx.Request);
+            });
             StatelessAuthentication.Enable(pipelines, securityCfg);
         }
 

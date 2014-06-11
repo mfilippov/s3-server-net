@@ -18,7 +18,7 @@ namespace Api
 
             Get["/"] = _ =>
             {
-                var owner = new BucketLord {ID = "bcaf1ffd86f461ca5fb16fd081034f", DisplayName = "webfile"};
+                var owner = (BucketLord) Context.CurrentUser;
                 var buckets = bucketInfoProvider.GetBucketList();
 
                 var date = Request.Headers.Date;
