@@ -26,7 +26,6 @@ namespace Api.Security
                 var bucketLord = _lordTemple.FindLordByAccessKeyId(credentials.Credentials.AccessKeyId);
                 if (bucketLord == null) return null;
 
-                //TODO: complete
                 var signature = S3F.ComputeSignature(credentials.Credentials.Date, bucketLord.SecretKey,
                     credentials.Credentials.Region,
                     S3F.CreateStringToSign(credentials.Credentials.Date, credentials.Credentials.Region,
