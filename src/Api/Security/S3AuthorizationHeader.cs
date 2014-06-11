@@ -25,7 +25,7 @@ namespace Api.Security
                     var sh = creds[1].Replace("SignedHeaders=", "").Split(';').ToList();
                     sh.Sort();
                     SignedHeaders = sh;
-                    Signature = creds[2].Replace("Signature", "");
+                    Signature = creds[2].Replace("Signature=", "");
                 } 
             }
 

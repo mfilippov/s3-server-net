@@ -61,6 +61,7 @@
     <Compile Include="ApiTests.cs" />
     <Compile Include="BucketInfoProviderTests\GetBucketTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="S3FTests\S3AuthorizationHeaderTests.cs" />
     <Compile Include="S3FTests\SecurityFunctionsTests.cs" />
     <Compile Include="S3FTests\UriEncodeTests.cs" />
     <Compile Include="TestNancyBootstrapper.cs" />
