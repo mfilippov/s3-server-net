@@ -1,15 +1,15 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Api.Domain;
 using LeviySoft.Extensions;
 using Nancy;
+using Nancy.Extensions;
 
 namespace Api.Security
 {
     public class FaceControlService : IFaceControlService
     {
-        private BucketLordTemple _lordTemple;
+        private readonly BucketLordTemple _lordTemple;
 
         public FaceControlService(BucketLordTemple lordTemple)
         {
@@ -19,28 +19,21 @@ namespace Api.Security
         public BucketLord CheckAuth(Request req)
         {
             // TODO: implement querystring-based authentication
-            var authString = req.Headers.Authorization;
-            var authStringComponents = authString.Split(',');
+            var credentials = S3AuthorizationHeader.ParseHeader(req.Headers.Authorization);
 
-            if (authStringComponents.Count() != 4) return null;
-
-            var authParams =
-                authStringComponents.Where(c => c.Contains("="))
-                    .Select(c => c.Split('='))
-                    .ToDictionary(c => c[0], c => c[1]);
-
-            if (authParams.ContainsKeys("Credential", "SignedHeaders", "Signature"))
+            if (credentials.Credentials.AccessKeyId.IsNotEmpty())
             {
-                var credentials = authParams["Credential"].Split('/');
-                var accessKeyId = credentials[0];
-
-                var bucketLord = _lordTemple.FindLordByAccessKeyId(accessKeyId);
+                var bucketLord = _lordTemple.FindLordByAccessKeyId(credentials.Credentials.AccessKeyId);
                 if (bucketLord == null) return null;
 
                 //TODO: complete
-                var sigDate = DateTime.ParseExact(credentials[1], "yyyyMMdd", CultureInfo.InvariantCulture);
-                var signedHeaders = authParams["SignedHeaders"].Split(';');
-
+                var signature = S3F.ComputeSignature(credentials.Credentials.Date, bucketLord.SecretKey,
+                    credentials.Credentials.Region,
+                    S3F.CreateStringToSign(credentials.Credentials.Date, credentials.Credentials.Region,
+                        S3F.CreateCanonicalRequest(req.Method, req.Path, string.Empty,
+                            new SortedDictionary<string, string>(req.Headers.ToDictionary(p => p.Key, p => string.Join(",", p.Value))),
+                            credentials.SignedHeaders.ToList(), req.Body.AsString())));
+                if (signature == credentials.Signature) return bucketLord;
             }
 
             return null;
