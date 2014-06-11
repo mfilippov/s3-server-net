@@ -31,5 +31,12 @@ namespace Api.Tests.S3FTests
             Assert.Equal("http%3A//meyerweb.com/eric/tools/dencoder/", S3F.UriEncode("http://meyerweb.com/eric/tools/dencoder/", false));
             Assert.Equal("http%3A%2F%2Fmeyerweb.com%2Feric%2Ftools%2Fdencoder%2F", S3F.UriEncode("http://meyerweb.com/eric/tools/dencoder/", true));
         }
+
+        [Fact]
+        public void UriEncodeEncodesDollar()
+        {
+            Assert.Equal("%24", S3F.UriEncode("$", false));
+            Assert.Equal("%24", S3F.UriEncode("$", true));
+        }
     }
 }

@@ -58,7 +58,15 @@ namespace Api
             signedHeaders.Sort();
             var signedHeadersString = string.Join(";", signedHeaders.Select(s => s.ToLowerInvariant()));
             var payloadHash = SHA256.Create().HashString(payload);
-            return string.Join("\n", httpMethod, absolutePath, queryString, headerString, string.Empty, signedHeadersString,
+            var canonicalQueryString = string.Join("&",
+                queryString.Replace("?", "")
+                    .Split('&')
+                    .Select(p => p.Split(new[] {'='}, 2))
+                    .Select(
+                        p =>
+                            string.Format("{0}={1}", UriEncode(p[0], true),
+                                UriEncode(p.Length > 1 ? p[1] : string.Empty, true))));
+            return string.Join("\n", httpMethod, UriEncode(absolutePath, false), canonicalQueryString, headerString, string.Empty, signedHeadersString,
                 payloadHash);
         }
 
