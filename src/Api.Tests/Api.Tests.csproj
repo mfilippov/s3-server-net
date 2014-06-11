@@ -68,6 +68,7 @@
     <Compile Include="S3FTests\SecurityFunctionsTests\Example1\SecurityFunctionsTests.cs" />
     <Compile Include="S3FTests\SecurityFunctionsTests\Example2\SecurityFunctionsTests.cs" />
     <Compile Include="S3FTests\SecurityFunctionsTests\Example3\SecurityFunctionsTests.cs" />
+    <Compile Include="S3FTests\SecurityFunctionsTests\Example4\SecurityFunctionsTests.cs" />
     <Compile Include="S3FTests\UriEncodeTests.cs" />
     <Compile Include="TestNancyBootstrapper.cs" />
   </ItemGroup>
