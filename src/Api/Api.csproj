@@ -50,6 +50,7 @@
     <Compile Include="Security\FaceControlService.cs" />
     <Compile Include="Security\IBucketLordTemple.cs" />
     <Compile Include="Security\IFaceControlService.cs" />
+    <Compile Include="Security\S3AuthorizationHeader.cs" />
     <Compile Include="Security\S3Auth.cs" />
     <Compile Include="Buckets\BucketInfoProvider.cs" />
     <Compile Include="Buckets\IBucketInfoProvider.cs" />
