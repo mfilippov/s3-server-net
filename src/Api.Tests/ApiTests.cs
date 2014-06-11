@@ -12,6 +12,7 @@ namespace Api.Tests
 {
     public class S3ModuleTests
     {
+        /*
         [Fact]
         public void WelcomePageTest()
         {
@@ -57,5 +58,6 @@ namespace Api.Tests
           </ListAllMyBucketsResult>";
             Assert.Equal(etalonResponse, result.Body.AsString().Substring(1));
         }
+         */
     }
 }

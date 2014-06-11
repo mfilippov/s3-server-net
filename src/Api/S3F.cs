@@ -62,6 +62,7 @@ namespace Api
                 queryString.Replace("?", "")
                     .Split('&')
                     .Select(p => p.Split(new[] {'='}, 2))
+                    .Where(p => p[0].IsNotEmpty())
                     .Select(
                         p =>
                             string.Format("{0}={1}", UriEncode(p[0], true),
