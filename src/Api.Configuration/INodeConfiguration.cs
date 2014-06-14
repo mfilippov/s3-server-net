@@ -5,5 +5,6 @@
         string Region { get; }
         string NodeEndpoint { get; }
         string RootPath { get; }
+        string BucketLordsFile { get; set; }
     }
 }

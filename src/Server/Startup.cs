@@ -6,7 +6,7 @@ namespace Server
     {
         public void Configuration(IAppBuilder app)
         {
-            app.UseNancy();
+            app.UseNancy(options => options.Bootstrapper = new S3ServerBootstrapper());
 #if DEBUG
             app.UseErrorPage();
 #endif
