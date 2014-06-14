@@ -14,13 +14,10 @@ namespace Api.Filesystem
             _rootPath = configuration.RootPath;
         }
 
-        public bool Exists(string path, bool checkFile = true, bool checkFolder = true)
+        public bool Exists(string path)
         {
             var absolutePath = Path.Combine(_rootPath, path);
-            if (checkFile && checkFolder) return File.Exists(absolutePath) || Directory.Exists(absolutePath);
-            if (checkFile) return File.Exists(absolutePath);
-            if (checkFolder) return File.Exists(absolutePath);
-            return false;
+            return File.Exists(absolutePath) || Directory.Exists(absolutePath);
         }
 
         public IList<string> ListRootDirectory(bool includeFiles = false, bool includeFolders = true)

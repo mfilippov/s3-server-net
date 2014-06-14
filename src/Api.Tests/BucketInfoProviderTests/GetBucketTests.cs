@@ -45,8 +45,8 @@ namespace Api.Tests.BucketInfoProviderTests
             var fileSystemProvider = Mock.Of<IFilesystemProvider>(pr =>
                 pr.ListRootDirectory(false, true) == buckets.Select(b => b.Name).ToList());
             Mock.Get(fileSystemProvider)
-                .Setup(m => m.Exists(It.IsAny<string>(), true, true))
-                .Returns((string s, bool b1, bool b2) => buckets.Select(b => makePath(b.Name)).Contains(s));
+                .Setup(m => m.Exists(It.IsAny<string>()))
+                .Returns((string s) => buckets.Select(b => makePath(b.Name)).Contains(s));
             Mock.Get(fileSystemProvider)
                 .Setup(m => m.StreamOfFile(It.IsAny<string>()))
                 .Returns((string s) => makeStream(buckets.First(b => makePath(b.Name) == s)));

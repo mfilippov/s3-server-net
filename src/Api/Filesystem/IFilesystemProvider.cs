@@ -5,7 +5,7 @@ namespace Api.Filesystem
 {
     public interface IFilesystemProvider
     {
-        bool Exists(string path, bool checkFile = true, bool checkFolder = true);
+        bool Exists(string path);
         IList<string> ListRootDirectory(bool includeFiles = false, bool includeFolders = true);
         Stream StreamOfFile(string path);
     }
