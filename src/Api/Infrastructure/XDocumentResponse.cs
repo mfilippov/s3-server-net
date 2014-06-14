@@ -1,4 +1,5 @@
-﻿using System.Xml.Linq;
+﻿using System.IO;
+using System.Xml.Linq;
 using Nancy;
 
 namespace Api.Infrastructure
@@ -9,7 +10,7 @@ namespace Api.Infrastructure
         {
             ContentType = "text/xml";
             Contents = document.Save;
-            
+
         }
     }
 }

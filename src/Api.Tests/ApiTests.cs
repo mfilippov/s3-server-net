@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Xml.Serialization;
 using Api.Configuration;
 using Api.Domain;
 using Api.Filesystem;
@@ -23,33 +21,37 @@ namespace Api.Tests
             var fileSystemProvider = Mock.Of<IFilesystemProvider>(pr =>
                 pr.GetBucketList() == new List<string> { bucketName } &&
                 pr.GetBucketCreationDateTime(bucketName) == bucketCreationDate);
-            var nodeConfigutration = Mock.Of<INodeConfiguration>();
+            var nodeConfigutration = Mock.Of<INodeConfiguration>(nc => nc.NodeEndpoint == "test.s3.net");
             var bucketLordTemple = Mock.Of<IBucketLordTemple>(bt => bt.FindLordByAccessKeyId("AKIAIOSFODNN7EXAMPLE") == new BucketLord
             {
+                Id = "bcaf1ffd86f461ca5fb16fd081034f",
                 AccessKeyId = "AKIAIOSFODNN7EXAMPLE",
-                SecretKey = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+                SecretKey = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+                DisplayName = "TestLord"
             });
             //instace ready
 
             var bootstrapper = new TestNancyBootstrapper(nodeConfigutration, fileSystemProvider, bucketLordTemple);
             
             var browser = new Browser(bootstrapper);
-            var result = browser.Get("/", context => context.Header("Authorization", "AWS4-HMAC-SHA256 Credential=AKIAIOSFODNN7EXAMPLE/20130524/us-east-1/s3/aws4_request,SignedHeaders=host;range;x-amz-content-sha256;x-amz-date,Signature=84b900417fea8c1abdd64ad82cf5bc2b2ec547c15e13adb20e2d63226eb93a93"));
+            var result = browser.Get("/", context => context.Header("Authorization", "AWS4-HMAC-SHA256 Credential=AKIAIOSFODNN7EXAMPLE/20130524/us-east-1/s3/aws4_request,SignedHeaders=host;range;x-amz-content-sha256;x-amz-date,Signature=dc665cbcfda4616de1eb422d4b95a82a51047634af44a9da5ae7b77d0531ed09"));
 
-            const string etalonResponse = @"<?xml version=""1.0"" encoding=""utf-8""?>
+           var etalonDocument = @"<?xml version=""1.0"" encoding=""utf-8""?>
           <ListAllMyBucketsResult>
             <Owner>
               <ID>bcaf1ffd86f461ca5fb16fd081034f</ID>
-              <DisplayName>webfile</DisplayName>
+              <DisplayName>TestLord</DisplayName>
             </Owner>
             <Buckets>
               <Bucket>
                 <Name>vxaitp8ocn</Name>
-                <CreationDate>12:00:35</CreationDate>
+                <CreationDate>2014-05-05T12:00:35.000Z</CreationDate>
               </Bucket>
             </Buckets>
-          </ListAllMyBucketsResult>";
-            Assert.Equal(etalonResponse, result.Body.AsString().Substring(1));
+          </ListAllMyBucketsResult>".Replace("\r\n", "").Replace(" ", "");
+            //TODO: Remove 0 i think it BOM problem.
+           var resultDocument = result.Body.AsString().Replace("\r\n", "").Replace(" ", "").Remove(0, 1);
+            Assert.Equal(etalonDocument, resultDocument);
         }
     }
 }

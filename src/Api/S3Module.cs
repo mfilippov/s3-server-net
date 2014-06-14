@@ -25,10 +25,10 @@ namespace Api
 
                 var document = new XDocument(
                     new XElement("ListAllMyBucketsResult",
-                        new XAttribute("xmlns", 
+                        /*new XAttribute("xmlns", 
                             string.Format("http://{0}/doc/{1}", 
                             appConfiguration.NodeEndpoint, 
-                            (date.HasValue ? date.Value : DateTime.Today).ToString("yyyy-MM-dd"))),
+                            (date.HasValue ? date.Value : DateTime.Today).ToString("yyyy-MM-dd"))),*/
                         new XElement("Owner",
                             new XElement("ID", owner.Id),
                             new XElement("DisplayName", owner.DisplayName)
