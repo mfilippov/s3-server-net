@@ -1,10 +1,10 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Api.Buckets;
 using Api.Configuration;
 using Api.Domain;
+using Api.Infrastructure;
 using Nancy;
 using Nancy.Security;
 
@@ -42,10 +42,7 @@ namespace Api
                             )
                         )
                     );
-                var resultStream = new MemoryStream();
-                document.Save(resultStream);
-                resultStream.Seek(0, SeekOrigin.Begin);
-                return Response.FromStream(resultStream, "text/xml");
+                return new XDocumentResponse(document);
             };
         }
     }
