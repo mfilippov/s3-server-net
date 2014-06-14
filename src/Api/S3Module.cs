@@ -30,7 +30,7 @@ namespace Api
                             appConfiguration.NodeEndpoint, 
                             (date.HasValue ? date.Value : DateTime.Today).ToString("yyyy-MM-dd"))),
                         new XElement("Owner",
-                            new XElement("ID", owner.ID),
+                            new XElement("ID", owner.Id),
                             new XElement("DisplayName", owner.DisplayName)
                             ),
                         new XElement("Buckets", buckets.Select(b =>

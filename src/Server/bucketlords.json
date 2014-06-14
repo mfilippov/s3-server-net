@@ -1,0 +1,11 @@
+﻿[
+    {
+        "Id":"bcaf1ffd86f461ca5fb16fd081034f",
+        "DisplayName":"webfile",
+        "AccessKeyId":"AccessKeyId",
+        "SecretKey":"SecretKey",
+        "GetPoliceList":[
+            {"BucketId":"BucketId","BucketPermission":"FullControl"}
+        ]
+    }
+]

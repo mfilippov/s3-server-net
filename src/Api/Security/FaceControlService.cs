@@ -9,9 +9,9 @@ namespace Api.Security
 {
     public class FaceControlService : IFaceControlService
     {
-        private readonly BucketLordTemple _lordTemple;
+        private readonly IBucketLordTemple _lordTemple;
 
-        public FaceControlService(BucketLordTemple lordTemple)
+        public FaceControlService(IBucketLordTemple lordTemple)
         {
             _lordTemple = lordTemple;
         }

@@ -1,20 +1,20 @@
 ﻿using System.Collections.Generic;
-using System.Xml.Serialization;
+using Api.Security;
 using Nancy.Security;
+using Newtonsoft.Json;
 
 namespace Api.Domain
 {
     public class BucketLord : IUserIdentity
     {
-        public string ID { get; set; }
+        public string Id { get; set; }
         public string DisplayName { get; set; }
-        public string AccessKeyID { get; set; }
+        public string AccessKeyId { get; set; }
         public string SecretKey { get; set; }
-
-        [XmlIgnore]
+        public IList<Policy> GetPoliceList { get; set; }
+        [JsonIgnore]
         public string UserName { get { return DisplayName; } }
-
-        [XmlIgnore]
+        [JsonIgnore]
         public IEnumerable<string> Claims { get { return new List<string>(); } } 
     }
 }

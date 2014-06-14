@@ -30,27 +30,11 @@ namespace Api.Tests.BucketInfoProviderTests
                 }
             };
 
-            Func<string, string> makePath = s => Path.Combine(s, "metadata.xml");
-
-            var serializator = new XmlSerializer(typeof (BucketInfo));
-
-            Func<BucketInfo, Stream> makeStream = bi =>
-            {
-                var xmlStream = new MemoryStream();
-                serializator.Serialize(xmlStream, bi);
-                xmlStream.Seek(0, SeekOrigin.Begin);
-                return xmlStream;
-            }; 
-
             var fileSystemProvider = Mock.Of<IFilesystemProvider>(pr =>
-                pr.ListRootDirectory(false, true) == buckets.Select(b => b.Name).ToList());
-            Mock.Get(fileSystemProvider)
-                .Setup(m => m.Exists(It.IsAny<string>()))
-                .Returns((string s) => buckets.Select(b => makePath(b.Name)).Contains(s));
-            Mock.Get(fileSystemProvider)
-                .Setup(m => m.StreamOfFile(It.IsAny<string>()))
-                .Returns((string s) => makeStream(buckets.First(b => makePath(b.Name) == s)));
-
+                pr.GetBucketList() == buckets.Select(b => b.Name).ToList() &&
+                pr.GetBucketCreationDateTime(buckets[0].Name) == buckets[0].CreationDate &&
+                pr.GetBucketCreationDateTime(buckets[1].Name) == buckets[1].CreationDate);
+            
             var bucketInfoProvider = new BucketInfoProvider(fileSystemProvider);
 
             var result = bucketInfoProvider.GetBucketList();

@@ -37,6 +37,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Nancy.0.23.0\lib\net40\Nancy.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,9 +51,11 @@
   <ItemGroup>
     <Compile Include="Infrastructure\XDocumentResponse.cs" />
     <Compile Include="Security\BucketLordTemple.cs" />
+    <Compile Include="Security\BucketPermission.cs" />
     <Compile Include="Security\FaceControlService.cs" />
     <Compile Include="Security\IBucketLordTemple.cs" />
     <Compile Include="Security\IFaceControlService.cs" />
+    <Compile Include="Security\Policy.cs" />
     <Compile Include="Security\S3AuthorizationHeader.cs" />
     <Compile Include="Buckets\BucketInfoProvider.cs" />
     <Compile Include="Buckets\IBucketInfoProvider.cs" />
