@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Api.Filesystem
 {
     public interface IFilesystemProvider
     {
-        bool Exists(string path, bool checkFile = true, bool checkFolder = true);
-        IList<string> ListRootDirectory(bool includeFiles = false, bool includeFolders = true);
-        Stream StreamOfFile(string path);
+        bool Exists(string path);
+        IList<string> GetBucketList();
+        DateTime GetBucketCreationDateTime(string bucketName);
+        Stream StreamOfFile(string fileName);
+        string ReadToEnd(string fileName);
     }
 }

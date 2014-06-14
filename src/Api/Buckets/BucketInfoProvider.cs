@@ -18,11 +18,7 @@ namespace Api.Buckets
 
         public IList<BucketInfo> GetBucketList()
         {
-            var bucketInfoSerializer = new XmlSerializer(typeof(BucketInfo));
-
-            return _fsProvider.ListRootDirectory()
-                .Where(s => _fsProvider.Exists(Path.Combine(s, "metadata.xml")))
-                .Select(s => bucketInfoSerializer.Deserialize(_fsProvider.StreamOfFile(Path.Combine(s, "metadata.xml"))) as BucketInfo).ToList();
+            return _fsProvider.GetBucketList().Select(bucketName => new BucketInfo {Name = bucketName, CreationDate = _fsProvider.GetBucketCreationDateTime(bucketName)}).ToList();
         }
     }
 }

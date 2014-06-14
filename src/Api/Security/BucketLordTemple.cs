@@ -1,21 +1,19 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Xml.Serialization;
+using Api.Configuration;
 using Api.Domain;
+using Api.Filesystem;
+using Newtonsoft.Json;
 
 namespace Api.Security
 {
     public class BucketLordTemple : IBucketLordTemple
     {
         private readonly IList<BucketLord> _lords; 
-        private readonly XmlSerializer _bucketLordListSerializer = new XmlSerializer(typeof (List<BucketLord>));
 
-        public BucketLordTemple()
+        public BucketLordTemple(IFilesystemProvider filesystemProvider, INodeConfiguration nodeConfiguration)
         {
-            _lords = new List<BucketLord>();
-            _lords =
-                _bucketLordListSerializer.Deserialize(File.Open("bucketlords.xml", FileMode.Open)) as List<BucketLord>;
+            _lords = JsonConvert.DeserializeObject<List<BucketLord>>(filesystemProvider.ReadToEnd(nodeConfiguration.BucketLordsFile));
         }
 
         public BucketLord CallBucketLord(string name)
@@ -25,7 +23,7 @@ namespace Api.Security
 
         public BucketLord FindLordByAccessKeyId(string accessKeyId)
         {
-            return _lords.SingleOrDefault(l => l.AccessKeyID == accessKeyId);
+            return _lords.SingleOrDefault(l => l.AccessKeyId == accessKeyId);
         }
     }
 }

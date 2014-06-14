@@ -1,10 +1,10 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Api.Buckets;
 using Api.Configuration;
 using Api.Domain;
+using Api.Infrastructure;
 using Nancy;
 using Nancy.Security;
 
@@ -25,12 +25,12 @@ namespace Api
 
                 var document = new XDocument(
                     new XElement("ListAllMyBucketsResult",
-                        new XAttribute("xmlns", 
+                        /*new XAttribute("xmlns", 
                             string.Format("http://{0}/doc/{1}", 
                             appConfiguration.NodeEndpoint, 
-                            (date.HasValue ? date.Value : DateTime.Today).ToString("yyyy-MM-dd"))),
+                            (date.HasValue ? date.Value : DateTime.Today).ToString("yyyy-MM-dd"))),*/
                         new XElement("Owner",
-                            new XElement("ID", owner.ID),
+                            new XElement("ID", owner.Id),
                             new XElement("DisplayName", owner.DisplayName)
                             ),
                         new XElement("Buckets", buckets.Select(b =>
@@ -42,10 +42,7 @@ namespace Api
                             )
                         )
                     );
-                var resultStream = new MemoryStream();
-                document.Save(resultStream);
-                resultStream.Seek(0, SeekOrigin.Begin);
-                return Response.FromStream(resultStream, "text/xml");
+                return new XDocumentResponse(document);
             };
         }
     }

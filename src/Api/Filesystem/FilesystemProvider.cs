@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Api.Configuration;
 
 namespace Api.Filesystem
@@ -14,26 +14,35 @@ namespace Api.Filesystem
             _rootPath = configuration.RootPath;
         }
 
-        public bool Exists(string path, bool checkFile = true, bool checkFolder = true)
+        public bool Exists(string path)
         {
             var absolutePath = Path.Combine(_rootPath, path);
-            if (checkFile && checkFolder) return File.Exists(absolutePath) || Directory.Exists(absolutePath);
-            if (checkFile) return File.Exists(absolutePath);
-            if (checkFolder) return File.Exists(absolutePath);
-            return false;
+            return File.Exists(absolutePath) || Directory.Exists(absolutePath);
         }
 
-        public IList<string> ListRootDirectory(bool includeFiles = false, bool includeFolders = true)
+        public IList<string> GetBucketList()
         {
-            if (includeFiles && includeFolders) return Directory.GetFileSystemEntries(_rootPath).ToList();
-            if (includeFolders) return Directory.GetDirectories(_rootPath).ToList();
-            if (includeFiles) return Directory.GetFiles(_rootPath).ToList();
-            return new List<string>();
+            return Directory.GetDirectories(_rootPath);
         }
 
-        public Stream StreamOfFile(string path)
+        public DateTime GetBucketCreationDateTime(string bucketName)
         {
-            return File.Open(Path.Combine(_rootPath, path), FileMode.Open);
+            return Directory.GetCreationTime(Path.Combine(_rootPath, bucketName));
+        } 
+
+        public Stream StreamOfFile(string fileName)
+        {
+            return File.Open(Path.Combine(_rootPath, fileName), FileMode.Open);
+        }
+
+        public string ReadToEnd(string fileName)
+        {
+            string result;
+            using (var rdr = new StreamReader(Path.Combine(_rootPath, fileName)))
+            {
+                result = rdr.ReadToEnd();
+            }
+            return result;
         }
     }
 }
