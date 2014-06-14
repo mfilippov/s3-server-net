@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Api.Configuration;
 
 namespace Api.Filesystem
 {
@@ -8,9 +9,9 @@ namespace Api.Filesystem
     {
         private readonly string _rootPath;
 
-        public FilesystemProvider(string rootPath)
+        public FilesystemProvider(INodeConfiguration configuration)
         {
-            _rootPath = rootPath;
+            _rootPath = configuration.RootPath;
         }
 
         public bool Exists(string path, bool checkFile = true, bool checkFolder = true)
