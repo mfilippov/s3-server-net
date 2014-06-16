@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Xunit;
 
@@ -12,12 +13,12 @@ namespace Api.Tests.S3FTests.SecurityFunctionsTests.Example4
         private static readonly DateTime RequestTimestamp = new DateTime(2013, 5, 24);
         private const string Region = "us-east-1";
 
-        private readonly SortedDictionary<string, string> _headers = new SortedDictionary<string, string>
+        private readonly ImmutableSortedDictionary<string, string> _headers = new SortedDictionary<string, string>
         {
             {"Host", " examplebucket.s3.amazonaws.com"},
             {"x-amz-content-sha256", "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"},
             {"x-amz-date", "20130524T000000Z"}
-        };
+        }.ToImmutableSortedDictionary();
 
         private List<string> SignedHeaders { get { return _headers.Keys.ToList(); } }
 

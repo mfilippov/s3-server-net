@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -51,12 +52,11 @@ namespace Api
         }
 
         public static string CreateCanonicalRequest(string httpMethod, string absolutePath, string queryString,
-            SortedDictionary<string, string> headers, List<string> signedHeaders, string payload)
+            Dictionary<string, string> headers, List<string> signedHeaders, string payload)
         {
             var headerString = string.Join("\n",
-                headers.Select(h => string.Format("{0}:{1}", h.Key.ToLowerInvariant(), h.Value.Trim())));
-            signedHeaders.Sort();
-            var signedHeadersString = string.Join(";", signedHeaders.Select(s => s.ToLowerInvariant()));
+                headers.ToImmutableSortedDictionary().Remove("Authorization").Select(h => string.Format("{0}:{1}", h.Key.ToLowerInvariant(), h.Value.Trim())));
+            var signedHeadersString = string.Join(";", signedHeaders.ToImmutableList().Sort().Select(s => s.ToLowerInvariant()));
             var payloadHash = SHA256.Create().HashString(payload);
             var canonicalQueryString = string.Join("&",
                 queryString.Replace("?", "")

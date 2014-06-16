@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Api.Domain;
 using Api.Security;
 using LeviySoft.Extensions;
@@ -26,7 +25,7 @@ namespace Api
                 Request.Method, 
                 Request.Path, 
                 string.Empty,
-                new SortedDictionary<string, string>(Request.Headers.ToDictionary(p => p.Key, p => string.Join(",", p.Value))),
+                Request.Headers.ToDictionary(p => p.Key, p => string.Join(",", p.Value)),
                 S3Authorization.SignedHeaders.ToList(), 
                 Request.Body.AsString());
 
