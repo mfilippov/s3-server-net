@@ -1,8 +1,6 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Xml.Linq;
 using Api.Buckets;
-using Api.Configuration;
 using Api.Domain;
 using Api.Infrastructure;
 using Nancy;
@@ -12,7 +10,7 @@ namespace Api
 {
     public class S3Module : NancyModule
     {
-        public S3Module(INodeConfiguration appConfiguration, IBucketInfoProvider bucketInfoProvider)
+        public S3Module(IBucketInfoProvider bucketInfoProvider)
         {
             this.RequiresAuthentication();
 
@@ -21,14 +19,8 @@ namespace Api
                 var owner = (BucketLord) Context.CurrentUser;
                 var buckets = bucketInfoProvider.GetBucketList();
 
-                var date = Request.Headers.Date;
-
                 var document = new XDocument(
                     new XElement("ListAllMyBucketsResult",
-                        /*new XAttribute("xmlns", 
-                            string.Format("http://{0}/doc/{1}", 
-                            appConfiguration.NodeEndpoint, 
-                            (date.HasValue ? date.Value : DateTime.Today).ToString("yyyy-MM-dd"))),*/
                         new XElement("Owner",
                             new XElement("ID", owner.Id),
                             new XElement("DisplayName", owner.DisplayName)
