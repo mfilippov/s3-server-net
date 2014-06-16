@@ -21,7 +21,7 @@ namespace Api.Security
                 var bucketLord = _lordTemple.FindLordByAccessKeyId(s3Req.S3Authorization.Credentials.AccessKeyId);
                 if (bucketLord == null) return null;
 
-                if (s3Req.Validate(bucketLord)) return bucketLord;
+                if (s3Req.ValidateWith(bucketLord)) return bucketLord;
             }
 
             return null;

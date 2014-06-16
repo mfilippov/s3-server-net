@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -51,22 +50,29 @@ namespace Api
             return result.ToString();
         }
 
+        public static string CreateCanonicalQueryString(string queryString)
+        {
+            return string.Join("&",
+                queryString.Replace("?", "")
+                    .Split('&')
+                    .Select(p => p.Split(new[] { '=' }, 2))
+                    .Where(p => p[0].IsNotEmpty())
+                    .Select(p =>
+                            string.Format("{0}={1}", UriEncode(p[0], true),
+                                UriEncode(p.Length > 1 ? p[1] : string.Empty, true))));
+        }
+
         public static string CreateCanonicalRequest(string httpMethod, string absolutePath, string queryString,
             Dictionary<string, string> headers, List<string> signedHeaders, string payload)
         {
             var headerString = string.Join("\n",
-                headers.ToImmutableSortedDictionary().Remove("Authorization").Select(h => string.Format("{0}:{1}", h.Key.ToLowerInvariant(), h.Value.Trim())));
-            var signedHeadersString = string.Join(";", signedHeaders.ToImmutableList().Sort().Select(s => s.ToLowerInvariant()));
+                headers.Keys
+                    .Where(k => k != "Authorization")
+                    .OrderBy(k => k)
+                    .Select(h => string.Format("{0}:{1}", h.ToLowerInvariant(), headers[h].Trim())));
+            var signedHeadersString = string.Join(";", signedHeaders.OrderBy(h => h).Select(s => s.ToLowerInvariant()));
             var payloadHash = SHA256.Create().HashString(payload);
-            var canonicalQueryString = string.Join("&",
-                queryString.Replace("?", "")
-                    .Split('&')
-                    .Select(p => p.Split(new[] {'='}, 2))
-                    .Where(p => p[0].IsNotEmpty())
-                    .Select(
-                        p =>
-                            string.Format("{0}={1}", UriEncode(p[0], true),
-                                UriEncode(p.Length > 1 ? p[1] : string.Empty, true))));
+            var canonicalQueryString = CreateCanonicalQueryString(queryString);
             return string.Join("\n", httpMethod, UriEncode(absolutePath, false), canonicalQueryString, headerString, string.Empty, signedHeadersString,
                 payloadHash);
         }

@@ -19,7 +19,7 @@ namespace Api
             S3Authorization = S3AuthorizationHeader.ParseHeader(req.Headers.Authorization);
         }
 
-        public bool Validate(BucketLord signer)
+        public bool ValidateWith(BucketLord signer)
         {
             var canonicalRequest = S3F.CreateCanonicalRequest(
                 Request.Method, 
