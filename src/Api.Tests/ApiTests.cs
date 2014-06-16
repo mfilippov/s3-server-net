@@ -19,8 +19,8 @@ namespace Api.Tests
             var bucketCreationDate = new DateTime(2014, 5, 5, 12, 0, 35);
 
             var fileSystemProvider = Mock.Of<IFilesystemProvider>(pr =>
-                pr.GetBucketList() == new List<string> { bucketName } &&
-                pr.GetBucketCreationDateTime(bucketName) == bucketCreationDate);
+                pr.GetDirectories() == new List<string> { bucketName } &&
+                pr.GetDirectoryCreationTime(bucketName) == bucketCreationDate);
             var nodeConfigutration = Mock.Of<INodeConfiguration>(nc => nc.NodeEndpoint == "test.s3.net");
             var bucketLordTemple = Mock.Of<IBucketLordTemple>(bt => bt.FindLordByAccessKeyId("AKIAIOSFODNN7EXAMPLE") == new BucketLord
             {

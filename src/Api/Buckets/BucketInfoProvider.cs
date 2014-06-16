@@ -18,7 +18,7 @@ namespace Api.Buckets
 
         public IList<BucketInfo> GetBucketList()
         {
-            return _fsProvider.GetBucketList().Select(bucketName => new BucketInfo {Name = bucketName, CreationDate = _fsProvider.GetBucketCreationDateTime(bucketName)}).ToList();
+            return _fsProvider.GetDirectories().Select(bucketName => new BucketInfo {Name = bucketName, CreationDate = _fsProvider.GetDirectoryCreationTime(bucketName)}).ToList();
         }
     }
 }

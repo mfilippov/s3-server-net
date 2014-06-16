@@ -31,9 +31,9 @@ namespace Api.Tests.BucketInfoProviderTests
             };
 
             var fileSystemProvider = Mock.Of<IFilesystemProvider>(pr =>
-                pr.GetBucketList() == buckets.Select(b => b.Name).ToList() &&
-                pr.GetBucketCreationDateTime(buckets[0].Name) == buckets[0].CreationDate &&
-                pr.GetBucketCreationDateTime(buckets[1].Name) == buckets[1].CreationDate);
+                pr.GetDirectories() == buckets.Select(b => b.Name).ToList() &&
+                pr.GetDirectoryCreationTime(buckets[0].Name) == buckets[0].CreationDate &&
+                pr.GetDirectoryCreationTime(buckets[1].Name) == buckets[1].CreationDate);
             
             var bucketInfoProvider = new BucketInfoProvider(fileSystemProvider);
 
