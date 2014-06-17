@@ -1,4 +1,4 @@
-﻿using Api.Domain;
+﻿ using Api.Domain;
 using Nancy;
 
 namespace Api.Security

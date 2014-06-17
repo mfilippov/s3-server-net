@@ -16,8 +16,6 @@ namespace Api.Tests
         [Fact]
         public void WelcomePageTest()
         {   //Arrange IFilesystemProvider instance
-            const string bucketName = "vxaitp8ocn";
-
             var buckets = new List<BucketInfo>
             {
                 new BucketInfo

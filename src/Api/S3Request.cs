@@ -24,7 +24,7 @@ namespace Api
             var canonicalRequest = S3F.CreateCanonicalRequest(
                 Request.Method, 
                 Request.Path, 
-                string.Empty,
+                Request.Url.Query,
                 Request.Headers.ToDictionary(p => p.Key, p => string.Join(",", p.Value)),
                 S3Authorization.SignedHeaders.ToList(), 
                 Request.Body.AsString());
