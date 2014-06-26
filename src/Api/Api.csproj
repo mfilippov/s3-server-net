@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Infrastructure\XDocumentResponse.cs" />
+    <Compile Include="S3Request.cs" />
     <Compile Include="Security\BucketLordTemple.cs" />
     <Compile Include="Security\BucketPermission.cs" />
     <Compile Include="Security\FaceControlService.cs" />

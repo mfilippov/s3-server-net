@@ -7,8 +7,8 @@ namespace Api.Filesystem
     public interface IFilesystemProvider
     {
         bool Exists(string path);
-        IList<string> GetBucketList();
-        DateTime GetBucketCreationDateTime(string bucketName);
+        IList<string> GetDirectories();
+        DateTime GetDirectoryCreationTime(string bucketName);
         Stream StreamOfFile(string fileName);
         string ReadToEnd(string fileName);
     }

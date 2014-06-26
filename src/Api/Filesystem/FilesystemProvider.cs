@@ -20,12 +20,12 @@ namespace Api.Filesystem
             return File.Exists(absolutePath) || Directory.Exists(absolutePath);
         }
 
-        public IList<string> GetBucketList()
+        public IList<string> GetDirectories()
         {
             return Directory.GetDirectories(_rootPath);
         }
 
-        public DateTime GetBucketCreationDateTime(string bucketName)
+        public DateTime GetDirectoryCreationTime(string bucketName)
         {
             return Directory.GetCreationTime(Path.Combine(_rootPath, bucketName));
         } 
@@ -37,12 +37,7 @@ namespace Api.Filesystem
 
         public string ReadToEnd(string fileName)
         {
-            string result;
-            using (var rdr = new StreamReader(Path.Combine(_rootPath, fileName)))
-            {
-                result = rdr.ReadToEnd();
-            }
-            return result;
+            return File.ReadAllText(Path.Combine(_rootPath, fileName));
         }
     }
 }

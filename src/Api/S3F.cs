@@ -50,23 +50,29 @@ namespace Api
             return result.ToString();
         }
 
-        public static string CreateCanonicalRequest(string httpMethod, string absolutePath, string queryString,
-            SortedDictionary<string, string> headers, List<string> signedHeaders, string payload)
+        public static string CreateCanonicalQueryString(string queryString)
         {
-            var headerString = string.Join("\n",
-                headers.Select(h => string.Format("{0}:{1}", h.Key.ToLowerInvariant(), h.Value.Trim())));
-            signedHeaders.Sort();
-            var signedHeadersString = string.Join(";", signedHeaders.Select(s => s.ToLowerInvariant()));
-            var payloadHash = SHA256.Create().HashString(payload);
-            var canonicalQueryString = string.Join("&",
+            return string.Join("&",
                 queryString.Replace("?", "")
                     .Split('&')
-                    .Select(p => p.Split(new[] {'='}, 2))
+                    .Select(p => p.Split(new[] { '=' }, 2))
                     .Where(p => p[0].IsNotEmpty())
-                    .Select(
-                        p =>
+                    .Select(p =>
                             string.Format("{0}={1}", UriEncode(p[0], true),
                                 UriEncode(p.Length > 1 ? p[1] : string.Empty, true))));
+        }
+
+        public static string CreateCanonicalRequest(string httpMethod, string absolutePath, string queryString,
+            Dictionary<string, string> headers, List<string> signedHeaders, string payload)
+        {
+            var headerString = string.Join("\n",
+                headers.Keys
+                    .Where(k => k != "Authorization")
+                    .OrderBy(k => k)
+                    .Select(h => string.Format("{0}:{1}", h.ToLowerInvariant(), headers[h].Trim())));
+            var signedHeadersString = string.Join(";", signedHeaders.OrderBy(h => h).Select(s => s.ToLowerInvariant()));
+            var payloadHash = SHA256.Create().HashString(payload);
+            var canonicalQueryString = CreateCanonicalQueryString(queryString);
             return string.Join("\n", httpMethod, UriEncode(absolutePath, false), canonicalQueryString, headerString, string.Empty, signedHeadersString,
                 payloadHash);
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using Xunit;
 
@@ -12,7 +13,7 @@ namespace Api.Tests.S3FTests.SecurityFunctionsTests.Example2
         private static readonly DateTime RequestTimestamp = new DateTime(2013, 5, 24);
         private const string Region = "us-east-1";
 
-        private readonly SortedDictionary<string, string> _headers = new SortedDictionary<string, string>
+        private readonly Dictionary<string, string> _headers = new Dictionary<string, string>
         {
             {"Host", "examplebucket.s3.amazonaws.com"},
             {"Date", "Fri, 24 May 2013 00:00:00 GMT"},

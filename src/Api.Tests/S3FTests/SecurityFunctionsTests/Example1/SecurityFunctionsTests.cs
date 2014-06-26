@@ -12,7 +12,7 @@ namespace Api.Tests.S3FTests.SecurityFunctionsTests.Example1
         private static readonly DateTime RequestTimestamp = new DateTime(2013, 5, 24);
         private const string Region = "us-east-1";
 
-        private readonly SortedDictionary<string, string> _headers = new SortedDictionary<string, string>
+        private readonly Dictionary<string, string> _headers = new Dictionary<string, string>
         {
             {"Host", " examplebucket.s3.amazonaws.com"},
             {"Range", " bytes=0-9"},
