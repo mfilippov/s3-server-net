@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Api.Domain;
 using Api.Security;
 using LeviySoft.Extensions;
@@ -25,7 +26,9 @@ namespace Api
                 Request.Method, 
                 Request.Path, 
                 Request.Url.Query,
-                Request.Headers.ToDictionary(p => p.Key, p => string.Join(",", p.Value)),
+                Request.Headers
+                    .Where(p => S3Authorization.SignedHeaders.Contains(p.Key, StringComparer.OrdinalIgnoreCase))
+                    .ToDictionary(p => p.Key, p => string.Join(",", p.Value)),
                 S3Authorization.SignedHeaders.ToList(), 
                 Request.Body.AsString());
 
